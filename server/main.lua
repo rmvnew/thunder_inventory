@@ -578,7 +578,43 @@ RegisterTunnel.useItem = function(slot, amount)
 
                 -- Verifica se o tipo de item é "usar"
                 if itemType == "usar" then
-                    if item == "mochila" then
+
+                    if item == "vale_carro" then
+                    
+                        local user_id = vRP.getUserId(source)
+                        if user_id then
+                            if vRP.tryGetInventoryItem(user_id, "vale_carro", 1, true, slot) then
+                                TriggerClientEvent('closeInventory', source)
+                                TriggerClientEvent("progress", source, 5000, "Resgatando veículo...")
+                                vTunnel.blockButtons(source, true)
+                                func:setBlockCommand(user_id, 5)
+                    
+                                SetTimeout(5000, function()
+                                    vTunnel.blockButtons(source, false)
+                    
+                                    -- Lógica para adicionar o carro à garagem
+                                    local veiculo = "panto"
+                                    local placa = vRP.gerarPlaca()
+                                    local ipva = os.time()
+                                    local expired = "{}"
+                    
+                                    vRP.execute("vRP/inserir_veh", {
+                                        veiculo = veiculo,
+                                        user_id = user_id,
+                                        placa = placa,
+                                        ipva = ipva,
+                                        expired = expired
+                                    })
+                    
+                                    TriggerClientEvent("Notify", source, "sucesso", "Você resgatou um <b>Panto</b>. Ele foi adicionado à sua garagem!", 6000)
+                                end)
+                                return { success = "Você resgatou um carro." }
+                            else
+                                TriggerClientEvent("Notify", source, "negado", "Você não tem um vale-carro para usar.", 6000)
+                            end
+                        end
+                    
+                    elseif item == "mochila" then
                         local currentWeight = vRP.getInventoryMaxWeight(user_id)
                         if currentWeight < 100 then
                             local sizeAmount = 30
