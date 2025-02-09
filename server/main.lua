@@ -1112,6 +1112,8 @@ RegisterTunnel.useItem = function(slot, amount)
 
                                 if itemType == "comer" then
                                     if item == "sanduiche" then
+
+
                                         local fome, sede = vRP.itemFood(item)
                                         TriggerClientEvent('closeInventory', source)
                                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1119,22 +1121,25 @@ RegisterTunnel.useItem = function(slot, amount)
                                         vTunnel.blockButtons(source, true)
                                         TriggerClientEvent("progress", source, 10000)
                                         
-                                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                                        SetTimeout(9500, function()
+                                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                                             
-                                            SetTimeout(9500, function()
                                                 vTunnel.blockButtons(source, false)
                                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                                            end)
-                                        end
+                                            end
+                                        end)
+
+
                                     end
                                 end
 
                             if itemType == "comer" then
                                 if item == "rosquinha" then
+
                                     local fome, sede = vRP.itemFood(item)
                                     TriggerClientEvent('closeInventory', source)
                                     play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1142,22 +1147,24 @@ RegisterTunnel.useItem = function(slot, amount)
                                     vTunnel.blockButtons(source, true)
                                     TriggerClientEvent("progress", source, 10000)
                                     
-                                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                                        vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                                        vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                                    SetTimeout(9500, function()
+                                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                                         
-                                        SetTimeout(9500, function()
                                             vTunnel.blockButtons(source, false)
                                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                             TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                                        end)
-                                    end
+                                        end
+                                    end)
+
                                 end
                             end
 
                         if itemType == "comer" then
                             if item == "hotdog" then
+
                                 local fome, sede = vRP.itemFood(item)
                                 TriggerClientEvent('closeInventory', source)
                                 play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1165,22 +1172,24 @@ RegisterTunnel.useItem = function(slot, amount)
                                 vTunnel.blockButtons(source, true)
                                 TriggerClientEvent("progress", source, 10000)
                                 
-                                if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                                    vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                                    vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                                SetTimeout(9500, function()
+                                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                        vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                        vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                                     
-                                    SetTimeout(9500, function()
                                         vTunnel.blockButtons(source, false)
                                         vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                         vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                         TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                                    end)
-                                end
+                                    end
+                                end)
+
                             end
                         end
 
                     if itemType == "comer" then
                         if item == "xburguer" then
+
                             local fome, sede = vRP.itemFood(item)
                             TriggerClientEvent('closeInventory', source)
                             play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1188,22 +1197,24 @@ RegisterTunnel.useItem = function(slot, amount)
                             vTunnel.blockButtons(source, true)
                             TriggerClientEvent("progress", source, 10000)
                             
-                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                            SetTimeout(9500, function()
+                                if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                    vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                    vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                                 
-                                SetTimeout(9500, function()
                                     vTunnel.blockButtons(source, false)
                                     vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                     vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                     TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                                end)
-                            end
+                                end
+                            end)
+
                         end
                     end
 
                 if itemType == "comer" then
                     if item == "chips" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1211,22 +1222,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "batataf" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1234,22 +1247,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
-                            
-                            SetTimeout(9500, function()
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                                
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "pizza" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1257,22 +1272,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "frango" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1280,22 +1297,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
-                            
-                            SetTimeout(9500, function()
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                                
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "bcereal" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1303,22 +1322,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "chocolate" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1326,22 +1347,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "marmita" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1349,22 +1372,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "coxinha" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1372,22 +1397,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
-                            
-                            SetTimeout(9500, function()
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                                
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "pipoca" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1395,22 +1422,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "temaki" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1418,22 +1447,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "morango" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1441,22 +1472,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "paodequeijo" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1464,22 +1497,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "pirulito" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1487,22 +1522,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "laranja" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1510,22 +1547,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                     if itemType == "comer" then
                         if item == "trakinas" then
+
                             local fome, sede = vRP.itemFood(item)
                             TriggerClientEvent('closeInventory', source)
                             play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1533,22 +1572,24 @@ RegisterTunnel.useItem = function(slot, amount)
                             vTunnel.blockButtons(source, true)
                             TriggerClientEvent("progress", source, 10000)
                             
-                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
-                                
-                                SetTimeout(9500, function()
+                            SetTimeout(9500, function()
+                                if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                    vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                    vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                                    
                                     vTunnel.blockButtons(source, false)
                                     vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                     vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                     TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                                end)
-                            end
+                                end
+                            end)
+
                         end
                     end
 
                 if itemType == "comer" then
                     if item == "doce" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1556,22 +1597,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "espeto" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1579,22 +1622,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "bolo" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1602,22 +1647,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
-                            
-                            SetTimeout(9500, function()
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                                
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "croissant" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1625,22 +1672,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 if itemType == "comer" then
                     if item == "batata" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1648,23 +1697,25 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
 
             if itemType == "comer" then
                 if item == "brigadeiro" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1672,23 +1723,25 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                        vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
 
             if itemType == "comer" then
                 if item == "pastel" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1696,22 +1749,24 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                        vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
                 if itemType == "comer" then
                     if item == "chocolate" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1719,22 +1774,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
             if itemType == "comer" then
                 if item == "taco" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1742,22 +1799,24 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                        vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
             if itemType == "comer" then
                 if item == "pao" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1765,22 +1824,24 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                        vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
             if itemType == "comer" then
                 if item == "donut" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1788,23 +1849,25 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                        vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
 
                 if itemType == "comer" then
                     if item == "hamburguer" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_eat(source, item, 10000)  -- Chama a função play_eat para carregar o prop de comida
@@ -1812,23 +1875,25 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
-                            vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 0)  -- Não altera a sede ao comer
+                                vRP.varyHunger(user_id, 25)  -- Aumenta a fome ao comer
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se alimentou-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
                 -- Caso o item seja do tipo "beber"
                 if itemType == "beber" then
                     if item == "agua" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -1836,18 +1901,19 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                                vRP.varyHunger(user_id, 0)   -- Não altera a fome
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 vRP.giveInventoryItem(user_id, "garrafavazia", 1, true)
                                 TriggerClientEvent("Notify", source, "sucesso", "Você bebeu água.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
@@ -1855,6 +1921,7 @@ RegisterTunnel.useItem = function(slot, amount)
                 -- Caso o item seja do tipo "beber"
                 if itemType == "beber" then
                     if item == "leite" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -1862,22 +1929,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
-                            
-                            SetTimeout(9500, function()
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                                vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                                
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
             if itemType == "beber" then
                 if item == "cafe" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -1885,22 +1954,24 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                        vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
                 if itemType == "beber" then
                     if item == "cafecleite" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -1908,22 +1979,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                                vRP.varyHunger(user_id, 0)   -- Não altera a fome
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
             if itemType == "beber" then
                 if item == "cafeexpresso" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -1931,22 +2004,24 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                        vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
             if itemType == "beber" then
                 if item == "capuccino" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -1954,22 +2029,24 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                        vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
             if itemType == "beber" then
                 if item == "frappuccino" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -1977,22 +2054,24 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                        vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
                 if itemType == "beber" then
                     if item == "cha" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -2000,22 +2079,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                                vRP.varyHunger(user_id, 0)   -- Não altera a fome
                             
-                            SetTimeout(9500, function()
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
             if itemType == "beber" then
                 if item == "icecha" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -2023,23 +2104,25 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                        vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
 
                 if itemType == "beber" then
                     if item == "sprunk" then
+
                         local fome, sede = vRP.itemFood(item)
                         TriggerClientEvent('closeInventory', source)
                         play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -2047,22 +2130,24 @@ RegisterTunnel.useItem = function(slot, amount)
                         vTunnel.blockButtons(source, true)
                         TriggerClientEvent("progress", source, 10000)
                         
-                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
-                            
-                            SetTimeout(9500, function()
+                        SetTimeout(9500, function()
+                            if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                                vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                                vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                                
                                 vTunnel.blockButtons(source, false)
                                 vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                                 vRPclient._stopAnim(source, false)  -- Interrompe a animação
                                 TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                            end)
-                        end
+                            end
+                        end)
+
                     end
                 end
 
             if itemType == "beber" then
                 if item == "cocacola" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -2070,22 +2155,24 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                        vRP.varyHunger(user_id, 0)   -- Não altera a fome
-                        
-                        SetTimeout(9500, function()
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                            
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
             if itemType == "beber" then
                 if item == "sucol" then
+
                     local fome, sede = vRP.itemFood(item)
                     TriggerClientEvent('closeInventory', source)
                     play_drink(source, item, 10000 * amount)  -- Animação do consumo
@@ -2093,17 +2180,18 @@ RegisterTunnel.useItem = function(slot, amount)
                     vTunnel.blockButtons(source, true)
                     TriggerClientEvent("progress", source, 10000)
                     
-                    if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
-                        vRP.varyThirst(user_id, 40)  -- Aumenta a sede
-                        vRP.varyHunger(user_id, 0)   -- Não altera a fome
+                    SetTimeout(9500, function()
+                        if vRP.tryGetInventoryItem(user_id, item, 1, true, slot) then
+                            vRP.varyThirst(user_id, 40)  -- Aumenta a sede
+                            vRP.varyHunger(user_id, 0)   -- Não altera a fome
                         
-                        SetTimeout(9500, function()
                             vTunnel.blockButtons(source, false)
                             vRPclient._DeletarObjeto(source)  -- Remove o item consumido
                             vRPclient._stopAnim(source, false)  -- Interrompe a animação
                             TriggerClientEvent("Notify", source, "sucesso", "Você se bebeu-se com sucesso.", 5000)
-                        end)
-                    end
+                        end
+                    end)
+
                 end
             end
 
