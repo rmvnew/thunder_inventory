@@ -25,17 +25,17 @@ CreateThread(function()
 
         for k,v in pairs(droplist) do
             local distance = #(coords - vector3(v.x,v.y,v.z))
-            if distance <= 2.0 and GetEntityHealth(ped) > 101 then
+            if distance <= 4.0 and GetEntityHealth(ped) > 101 then
                 time = 2
-                DrawMarker(22,v.x,v.y,v.z-0.97, 0,0,0,180.0,0,0,0.3,0.3,0.3,243, 5, 84, 50,0,0,0,20)
-                -- if distance < 2.0 then 
-                    -- DrawText3D(v.x, v.y, v.z - 0.4, "Pressione ~q~[E] ~w~para pegar~q~ " .. v.count .. "x " .. v.item)
+                DrawMarker(22,v.x,v.y,v.z-0.7, 0,0,0,180.0,0,0,0.3,0.3,0.3,100, 5, 84, 255,0,0,0,20)
+                    if distance < 1.0 then 
+                        DrawText3D(v.x, v.y, v.z - 0.4, "Pressione ~q~[E] ~w~para pegar~q~ " .. v.count .. "x " .. v.item)
+                    end
 
                     if IsControlJustPressed(0, 38) then 
                         Remote.pegarItem(k)
                         Wait(2000)
                     end
-                -- end
             end
         end
 
