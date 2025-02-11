@@ -32,6 +32,9 @@ function API.SearchChest(hasRobbery)
     local vehicle   = getClosestVeh()
     local args      = {}
     local source = source
+
+    print("ID do veículo encontrado:", vehicle)
+    
     if vRP.isHandcuffed() or vRP.getHealth(source) <= 101 then
         TriggerEvent('Notify', 'negado', 'Você está morto e nao consegue abrir o porta malas morto.', 5000)
         print('ok')
