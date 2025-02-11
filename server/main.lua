@@ -606,7 +606,7 @@ RegisterTunnel.useItem = function(slot, amount)
                                         expired = expired
                                     })
                     
-                                    TriggerClientEvent("Notify", source, "sucesso", "Você resgatou um <b>Panto</b>. Ele foi adicionado à sua garagem!", 6000)
+                                    TriggerClientEvent("Notify", source, "sucesso", "Você resgatou um <b>"..veiculo.."</b>. Ele foi adicionado à sua garagem!", 6000)
                                 end)
                                 return { success = "Você resgatou um carro." }
                             else
@@ -2494,140 +2494,6 @@ end)
 
 
 local Cooldowns = {}
-
--- RegisterTunnel.requireChest = function(data, maxbau, id)
---     local source = source
---     local user_id = vRP.getUserId(source)
-    
---     if user_id then
---         if data[1] == "VEHICLE" then
---             local vehicleNetworkId = NetworkGetEntityFromNetworkId(data[2])
---             local plate = GetVehicleNumberPlateText(vehicleNetworkId)
---             local entityModel = GetEntityModel(vehicleNetworkId)
---             local name = vehList[entityModel] and vehList[entityModel].model or "desconhecido"
---             local uniqueID = plate .. ":" .. name
-
-            
-
---             if name == "desconhecido" then
---                 TriggerClientEvent("Notify", source, "negado", "Veículo desconhecido ou sem cadastro!", 8000)
---                 return false
---             end
-            
-
---             if OpennedVehicle[uniqueID] then return false end
-
---             local cooldownTime = 10 -- tempo de espera em segundos
---             local lastOpened = Cooldowns[uniqueID] or 0
---             local currentTime = os.time()
---             if currentTime - lastOpened < cooldownTime then
---                 local timeRemaining = cooldownTime - (currentTime - lastOpened)
---                 TriggerClientEvent("Notify", source, "negado", "Você só pode abrir o porta-malas novamente em <b>"..timeRemaining.." segundo(s)</b>", 5000)
---                 return
---             end
---             Cooldowns[uniqueID] = currentTime
-            
---             local nuser_id = vRP.getUserByRegistration(plate)
---             vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a", "idle_a_female" } }, true)
-
-
---             if not dataVehicle[uniqueID] then
---                 local rows = MySQL.query.await("SELECT portamalas FROM vehicle_chests WHERE user_id = ? AND vehicle = ?", {nuser_id, string.lower(name)})
-
---                 if rows and #rows > 0 then
-
---                     dataVehicle[uniqueID] = { json.decode(rows[1].portamalas) or {}, name, plate, false, true }
---                 else
-
---                     dataVehicle[uniqueID] = { {}, name, plate, true, true }
---                     MySQL.insert.await("INSERT INTO vehicle_chests (user_id, vehicle, portamalas) VALUES (?, ?, ?)", {
---                         nuser_id, string.lower(name), json.encode({})
---                     })
---                 end
---             end
-            
-
---             local myVehicle, weight = {}, 0.0
---             for k, v in pairs(dataVehicle[uniqueID][1]) do
---                 if Items[v.item] then
---                     v.amount = parseInt(v.amount)
---                     v.name = Items[v.item].name
---                     v.peso = Items[v.item].weight
---                     v.index = v.item
---                     myVehicle[k] = v
---                     weight = weight + (Items[v.item].weight * v.amount)
---                 end
---             end
-
---             OpennedVehicle[uniqueID] = user_id
---             OpennedChestUser[user_id] = { tipo = "VEHICLE", name = uniqueID, vehname = name }
-            
-
---             MySQL.update.await("UPDATE vehicle_chests SET portamalas = ? WHERE user_id = ? AND vehicle = ?", {
---                 json.encode(dataVehicle[uniqueID][1]), nuser_id, string.lower(name)
---             })
-            
---             return { inventory = myVehicle, weight = weight, max_weight = vRP.getVehicleTrunk(name) }
---         elseif data[1] == "GROUP" then
---             if OpennedOrg[data[3]] then return end
---             if (Chests[data[3]] and Chests[data[3]].permission ~= nil and vRP.hasPermission(user_id, Chests[data[3]].permission)) or (Chests[data[3]] and Chests[data[3]].permission == true) then
---                 vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a","idle_a_female"} }, false)
---                 if dataOrgChest[data[3]] == nil then
---                     local rows = vRP.getSData("orgChest:" .. data[3])
---                     dataOrgChest[data[3]] = { json.decode(rows) or {} }
---                 end
-
---                 local myOrgChest = {}
---                 local weight = 0.0
---                 for k, v in pairs(dataOrgChest[data[3]][1]) do
---                     if Items[v.item] then
---                         v["amount"] = parseInt(v["amount"])
--- 						v["name"] = Items[v["item"]].name
--- 						v["peso"] = Items[v["item"]].weight
--- 						v["index"] = v["item"]
--- 						v["key"] = v["item"]
--- 						v["slot"] = k
---                         myOrgChest[k] = v
---                         weight = weight + (Items[v.item].weight * parseInt(v["amount"]))
---                     end
---                 end
---                 OpennedChestUser[user_id] = { tipo = "GROUP", name = data[3] }
---                 OpennedOrg[data[3]] = user_id
---                 return { inventory = myOrgChest, weight = weight, max_weight = Chests[data[3]].weight }
---             else
---                 TriggerClientEvent("Notify", source, "negado", "Você não tem permissão para acessar esse bau!", 8000)
---             end
---         elseif data == "HOUSE" then
---             if OpennedHouse[id] then return end
---              vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a","idle_a_female"} }, false)
---             if dataHouseChest[id] == nil then
--- 				local rows = vRP.query("mirtin/allInfoHome", { id = id })
--- 				dataHouseChest[id] = { json.decode(rows[1].bau) or {}, houseID, maxbau }
--- 			end
-
--- 			local myHouseChest = {}
--- 			local weight = 0.0
--- 			for k, v in pairs(dataHouseChest[id][1]) do
--- 				if Items[v.item] then
---                     if Items[v.item] then
---                         v["amount"] = parseInt(v["amount"])
--- 						v["name"] = Items[v["item"]].name
--- 						v["peso"] = Items[v["item"]].weight
--- 						v["index"] = v["item"]
--- 						v["key"] = v["item"]
--- 						v["slot"] = k
---                         myHouseChest[k] = v
---                         weight = weight + (Items[v.item].weight * parseInt(v["amount"]))
---                     end
--- 				end
--- 			end
---             OpennedChestUser[user_id] = { tipo = "HOUSE", name = id }
---             OpennedHouse[id] = user_id
---            -- vRPclient._stopAnim(source, false)
---             return { inventory = myHouseChest, weight = weight, max_weight = maxbau }
---         end
---     end
--- end
 
 
 RegisterTunnel.requireChest = function(data, maxbau, id)
