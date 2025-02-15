@@ -93,3 +93,12 @@ AddEventHandler("unlockVehicle", function(netId)
         end
     end
 end)
+
+
+RegisterNetEvent("SetAsNoLongerOwned")
+AddEventHandler("SetAsNoLongerOwned", function(vehNet)
+    local veh = NetToVeh(vehNet)
+    if DoesEntityExist(veh) then
+        SetVehicleAsNoLongerNeeded(veh) -- Remove a propriedade do jogador anterior
+    end
+end)

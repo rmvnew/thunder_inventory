@@ -739,61 +739,8 @@ RegisterTunnel.useItem = function(slot, amount)
                             return { error = "Você não possui essa droga." }
                         end
                     elseif item == "lockpick" then
-
-                        
-                        -- local plate, mName, mNet, mPortaMalas, mPrice, mLock, mModel = vRPclient.ModelName(source, 7)
-                        -- local plateUser = vRP.getUserByRegistration(plate)
-                        -- local plyCoords = GetEntityCoords(GetPlayerPed(source))
-                        -- local x, y, z = plyCoords[1], plyCoords[2], plyCoords[3]
-
-                        
-                        -- print("Valores retornados por vRPclient.ModelName:")
-                        -- print("Placa:", plate)
-                        -- print("Modelo:", mModel)
-                        -- print("ID da Network:", mNet)
-                        -- print("Está trancado:", mLock)
-
-                        
-                        -- if plateUser then
-                        --     print("<<<<<<<<<<<<<<<<<<<<   ¨¨¨¨¨¨")
-                        --     if mLock then
-                        --         if vRP.tryGetInventoryItem(user_id, "lockpick", 1, true, slot) then
-                        --             TriggerClientEvent('closeInventory', source)
-                        --             Wait(500)
-
-                        --             vTunnel._startAnimHotwired(source)
-                        --             vTunnel.blockButtons(source, true)
-
-                        --             local finished = vRPclient.taskBar(source, 2500, math.random(7, 15))
-                        --             if finished then
-                        --                 finished = vRPclient.taskBar(source, 1500, math.random(7, 15))
-                        --                 if finished then
-                        --                     finished = vRPclient.taskBar(source, 1000, math.random(7, 15))
-                        --                     if finished then
-                        --                         local entity = NetworkGetEntityFromNetworkId(mNet)
-                        --                         if entity then
-                        --                             SetVehicleDoorsLocked(entity, 1)
-                        --                         end
-                        --                         TriggerClientEvent("vrp_sounds:source", source, "lock", 0.1)
-                        --                         TriggerClientEvent("Notify", source, "negado", "Você destrancou o veículo, cuidado a polícia foi acionada.", 6000)
-                        --                         vRP.sendLog("LOCKPICK", "**SUCESSO** O [ID: " .. user_id .. "] Roubou o veículo " .. mModel .. "(ID:" .. plateUser .. ") nas coordenadas: " .. x .. "," .. y .. "," .. z)
-                        --                     else
-                        --                         TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
-                        --                     end
-                        --                 else
-                        --                     TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
-                        --                 end
-                        --             else
-                        --                 TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
-                        --             end
-
-                        --             -- Finaliza a animação e desbloqueia os botões em qualquer caso
-                        --             vRPclient._stopAnim(source, false)
-                        --             vTunnel.blockButtons(source, false)
-                        --         end
-                        --     end
-                        -- end
-
+  
+                       
                        -- Garantindo que o evento "receiveVehicleInfo" só seja registrado uma vez
                         if not alreadyRegistered then
                             RegisterNetEvent("receiveVehicleInfo")
@@ -855,7 +802,8 @@ RegisterTunnel.useItem = function(slot, amount)
                                                         TriggerClientEvent("unlockVehicle", source, netId)
                                                         TriggerClientEvent("vrp_sounds:source", source, "lock", 0.1)
                                                         TriggerClientEvent("Notify", source, "negado", "Você destrancou o veículo, cuidado a polícia foi acionada.", 6000)
-            
+                                                        TriggerClientEvent("SetAsNoLongerOwned", -1, netId)
+
                                                         
                                                     else
                                                         TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
