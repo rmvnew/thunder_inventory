@@ -55,7 +55,7 @@ AddEventHandler("getNearestVehicleInfo", function()
         local netId = VehToNet(vehicle)
         local locked = GetVehicleDoorLockStatus(vehicle)
         
-        print("🚗 Veículo encontrado: Placa:", plate, "Modelo:", model, "NetID:", netId, "Locked:", locked)
+        -- print("🚗 Veículo encontrado: Placa:", plate, "Modelo:", model, "NetID:", netId, "Locked:", locked)
         -- Envia as informações para o servidor
         TriggerServerEvent("receiveVehicleInfo", plate, model, netId, locked)
     else
@@ -75,7 +75,7 @@ AddEventHandler("unlockVehicle", function(netId)
         TriggerEvent("vrp_sounds:source", "lock", 0.1)
         TriggerEvent("Notify", "sucesso", "Você destrancou o veículo!", 6000)
     else
-        print("❌ Erro ao tentar destrancar o veículo! Network ID inválido. Tentando destrancar pelo método alternativo.")
+        -- print("❌ Erro ao tentar destrancar o veículo! Network ID inválido. Tentando destrancar pelo método alternativo.")
         
         -- Alternativa: Destrancar veículo mais próximo se netId for inválido
         local ped = PlayerPedId()
