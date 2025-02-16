@@ -7,6 +7,8 @@ vRPclient = Tunnel.getInterface("vRP")
 RegisterTunnel = {}
 Tunnel.bindInterface(Resource, RegisterTunnel)
 
+
+
 local arena = Tunnel.getInterface("thunder_arena")
 local func = exports["vrp"]
 
@@ -2555,39 +2557,127 @@ end)
 local Cooldowns = {}
 
 
+-- RegisterTunnel.requireChest = function(data, maxbau, id)
+--     local source = source
+--     local user_id = vRP.getUserId(source)
+
+--     vehList = exports.thunder_garages:garages_vehicle_list()
+     
+--     if user_id then
+--         if data[1] == "VEHICLE" then
+--             local vehicleNetworkId = NetworkGetEntityFromNetworkId(data[2])
+            
+--             if vehicleNetworkId == 0 then
+--                 print("[ERRO] Network ID inválido!")
+--                 return false
+--             end
+            
+--             local plate = GetVehicleNumberPlateText(vehicleNetworkId)
+            
+--             local entityModel = GetEntityModel(vehicleNetworkId)
+            
+--             local name = vehList[entityModel] and vehList[entityModel].model or "desconhecido"
+           
+--             local uniqueID = plate .. ":" .. name
+            
+--             if name == "desconhecido" then
+--                 TriggerClientEvent("Notify", source, "negado", "Veículo desconhecido ou sem cadastro!", 8000)
+--                 return false
+--             end
+            
+--             if OpennedVehicle[uniqueID] then 
+--                 return false 
+--             end
+            
+--             local cooldownTime = 10 -- tempo de espera em segundos
+--             local lastOpened = Cooldowns[uniqueID] or 0
+--             local currentTime = os.time()
+--             if currentTime - lastOpened < cooldownTime then
+--                 local timeRemaining = cooldownTime - (currentTime - lastOpened)
+--                 TriggerClientEvent("Notify", source, "negado", "Você só pode abrir o porta-malas novamente em <b>"..timeRemaining.." segundo(s)</b>", 5000)
+--                 return
+--             end
+--             Cooldowns[uniqueID] = currentTime
+            
+--             local nuser_id = vRP.getUserByRegistration(plate)
+            
+--             if not nuser_id then
+--                 TriggerClientEvent("Notify", source, "negado", "Erro ao identificar o dono do veículo!", 8000)
+--                 return false
+--             end
+            
+--             vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a", "idle_a_female" } }, true)
+            
+--             if not dataVehicle[uniqueID] then
+--                 local rows = MySQL.query.await("SELECT portamalas FROM vehicle_chests WHERE user_id = ? AND vehicle = ?", {nuser_id, string.lower(name)})
+                
+--                 if rows and #rows > 0 then
+--                     dataVehicle[uniqueID] = { json.decode(rows[1].portamalas) or {}, name, plate, false, true }
+--                 else
+--                     dataVehicle[uniqueID] = { {}, name, plate, true, true }
+--                     MySQL.insert.await("INSERT INTO vehicle_chests (user_id, vehicle, portamalas) VALUES (?, ?, ?)", {
+--                         nuser_id, string.lower(name), json.encode({})
+--                     })
+--                 end
+--             end
+            
+--             local myVehicle, weight = {}, 0.0
+--             for k, v in pairs(dataVehicle[uniqueID][1]) do
+--                 if Items[v.item] then
+--                     v.amount = parseInt(v.amount)
+--                     v.name = Items[v.item].name
+--                     v.peso = Items[v.item].weight
+--                     v.index = v.item
+--                     myVehicle[k] = v
+--                     weight = weight + (Items[v.item].weight * v.amount)
+--                 end
+--             end
+            
+--             OpennedVehicle[uniqueID] = user_id
+--             OpennedChestUser[user_id] = { tipo = "VEHICLE", name = uniqueID, vehname = name }
+            
+--             MySQL.update.await("UPDATE vehicle_chests SET portamalas = ? WHERE user_id = ? AND vehicle = ?", {
+--                 json.encode(dataVehicle[uniqueID][1]), nuser_id, string.lower(name)
+--             })
+            
+--             return { inventory = myVehicle, weight = weight, max_weight = vRP.getVehicleTrunk(name) }
+--         end
+--     end
+-- end
+
+
 RegisterTunnel.requireChest = function(data, maxbau, id)
     local source = source
     local user_id = vRP.getUserId(source)
 
     vehList = exports.thunder_garages:garages_vehicle_list()
-     
+
     if user_id then
+        -- 🔹 BAÚ DO CARRO (FUNCIONANDO PERFEITO)
         if data[1] == "VEHICLE" then
             local vehicleNetworkId = NetworkGetEntityFromNetworkId(data[2])
-            
+
             if vehicleNetworkId == 0 then
                 print("[ERRO] Network ID inválido!")
                 return false
             end
-            
+
             local plate = GetVehicleNumberPlateText(vehicleNetworkId)
-            
             local entityModel = GetEntityModel(vehicleNetworkId)
-            
             local name = vehList[entityModel] and vehList[entityModel].model or "desconhecido"
-           
             local uniqueID = plate .. ":" .. name
-            
+
             if name == "desconhecido" then
                 TriggerClientEvent("Notify", source, "negado", "Veículo desconhecido ou sem cadastro!", 8000)
                 return false
             end
-            
+
             if OpennedVehicle[uniqueID] then 
                 return false 
             end
-            
-            local cooldownTime = 10 -- tempo de espera em segundos
+
+            -- Cooldown para evitar spam
+            local cooldownTime = 10
             local lastOpened = Cooldowns[uniqueID] or 0
             local currentTime = os.time()
             if currentTime - lastOpened < cooldownTime then
@@ -2596,19 +2686,19 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
                 return
             end
             Cooldowns[uniqueID] = currentTime
-            
+
             local nuser_id = vRP.getUserByRegistration(plate)
-            
+
             if not nuser_id then
                 TriggerClientEvent("Notify", source, "negado", "Erro ao identificar o dono do veículo!", 8000)
                 return false
             end
-            
+
             vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a", "idle_a_female" } }, true)
-            
+
             if not dataVehicle[uniqueID] then
                 local rows = MySQL.query.await("SELECT portamalas FROM vehicle_chests WHERE user_id = ? AND vehicle = ?", {nuser_id, string.lower(name)})
-                
+
                 if rows and #rows > 0 then
                     dataVehicle[uniqueID] = { json.decode(rows[1].portamalas) or {}, name, plate, false, true }
                 else
@@ -2618,7 +2708,7 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
                     })
                 end
             end
-            
+
             local myVehicle, weight = {}, 0.0
             for k, v in pairs(dataVehicle[uniqueID][1]) do
                 if Items[v.item] then
@@ -2630,18 +2720,61 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
                     weight = weight + (Items[v.item].weight * v.amount)
                 end
             end
-            
+
             OpennedVehicle[uniqueID] = user_id
             OpennedChestUser[user_id] = { tipo = "VEHICLE", name = uniqueID, vehname = name }
-            
+
             MySQL.update.await("UPDATE vehicle_chests SET portamalas = ? WHERE user_id = ? AND vehicle = ?", {
                 json.encode(dataVehicle[uniqueID][1]), nuser_id, string.lower(name)
             })
-            
+
             return { inventory = myVehicle, weight = weight, max_weight = vRP.getVehicleTrunk(name) }
+        end
+
+        -- 🔹 BAÚ DE FACÇÃO (CORREÇÃO COMPLETA)
+        if data[1] == "GROUP" then
+            local facChestName = data[3] -- Nome do baú da facção
+            local chestKey = "orgChest:" .. facChestName -- Ajuste para o formato da tabela
+
+            print("SERVER: Requisição de baú GROUP para: " .. facChestName)
+
+            -- Consulta na tabela correta (`vrp_srv_data`) para buscar os itens do baú
+            local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
+
+            if not rows or #rows == 0 then
+                print("SERVER: Nenhum baú de facção encontrado para: " .. facChestName)
+                return false
+            end
+
+            -- Decodifica os dados do baú da facção
+            local chestData = json.decode(rows[1].dvalue) or {}
+
+            -- Calcula o peso dos itens dentro do baú
+            local totalWeight = 0.0
+            for k, v in pairs(chestData) do
+                if Items[v.item] then
+                    v.amount = parseInt(v.amount)
+                    v.name = Items[v.item].name
+                    v.peso = Items[v.item].weight
+                    v.index = v.item
+                    totalWeight = totalWeight + (Items[v.item].weight * v.amount)
+                end
+            end
+
+            -- Retorna os dados formatados para a NUI
+            local response = {
+                inventory = chestData,
+                weight = totalWeight,
+                max_weight = maxbau or 5000
+            }
+
+            print("SERVER: Baú de facção encontrado: " .. json.encode(response))
+
+            return response
         end
     end
 end
+
 
 
 RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
@@ -3614,3 +3747,6 @@ end)
 --         TriggerClientEvent("Notify", source, "negado", "Nenhum veículo encontrado para destrancar.", 6000)
 --     end
 -- end)
+
+
+

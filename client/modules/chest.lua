@@ -27,6 +27,7 @@ function API.isInVehicleChest()
 end
 
 function API.SearchChest(hasRobbery) 
+    print(" 2 - >>>> openchest")
     local ply       = PlayerPedId()
     local plyCds    = GetEntityCoords(ply)
     local vehicle   = getClosestVeh()
@@ -90,12 +91,90 @@ end)
 
 local LAST_COMMAND_EXECUTION = GetGameTimer()
 RegisterCommand("openchest",function() 
+    print(" 1 - >>>> openchest")
+
     if GetGameTimer() - LAST_COMMAND_EXECUTION < 2000 then 
         TriggerEvent("Notify","negado","Espere um pouco para executar este comando novamente.")
         return
     end
     API.SearchChest()
 end)
+
+
+
+
+local LAST_FAC_COMMAND = GetGameTimer()
+RegisterCommand("openfacchest", function()
+
+    print(" 1 - >>>> openfacchest")
+
+    if GetGameTimer() - LAST_FAC_COMMAND < 2000 then
+        TriggerEvent("Notify", "negado", "Espere um pouco para executar este comando novamente.")
+        return
+    end
+    LAST_FAC_COMMAND = GetGameTimer()
+    API.SearchFacChest()
+end)
+
+
+function API.SearchFacChest()
+    print(" 2 - >>>> openfacchest")
+    local ply    = PlayerPedId()
+    local plyCds = GetEntityCoords(ply)
+    local source = source
+
+    print("Procurando baú de facção nas proximidades...")
+
+    if vRP.isHandcuffed() or vRP.getHealth(source) <= 101 then
+        TriggerEvent('Notify','negado','Você não pode acessar o baú de facção agora.',5000)
+        return
+    end
+
+    local found = false
+    for k, v in pairs(Chests) do 
+        local distance = #(v.coords - plyCds)
+        if distance <= 2.0 then
+            print("Baú de facção encontrado: " .. k)
+            local args = {"GROUP", false, k}
+            openChest = v
+
+            local response = Remote.requireChest(args)
+            if response then
+                response.chest_type = "GROUP"
+                SendNUIMessage({ route = "OPEN_CHEST", payload = response })
+                SetNuiFocus(true, true)
+            end
+            found = true
+            break
+        end
+    end
+
+    if not found then
+        print("Nenhum baú de facção por perto.")
+    end
+end
+
+-------------------------------------------
+-- 4) EVENTO PARA BAÚ DE CASA (se aplicável)
+-------------------------------------------
+RegisterNetEvent("mirt1n:myHouseChest", function(id, houseid, maxBau)
+    print(id, maxBau)
+    local response = Remote.requireChest({"HOUSE", maxBau, id})
+    local source = source
+    if vRP.getHealth(source) <= 101 then
+        TriggerEvent('Notify','negado','Você não pode acessar o inventário agora.',5000)
+        return
+    end
+    if response then
+        response.chest_type = "HOUSE"
+        SendNUIMessage({ route = "OPEN_CHEST", payload = response })
+        SetNuiFocus(true, true)
+    end
+end)
+
+
+
+
 CreateThread(function() 
     SetNuiFocus(false,false)
     while true do 
@@ -104,13 +183,13 @@ CreateThread(function()
         local plyCoords = GetEntityCoords(ply)
         for k,v in pairs(Chests) do 
             local distance = #(v.coords - plyCoords)
-            if distance < 5.0 then 
+            if distance < 7.0 then 
                 msec = 4
                 -- DrawMarker(20, v.coords - vec3(0.0,0.0,0.4), 0, 0, 0, 0, 180.0, 0, 0.7, 0.7, 0.7, 130, 109, 213, 75, 1, 0, 0, 1)
-                DrawMarker(30, v.coords - vec3(0.0,0.0,0.4), 0, 0, 0, 0, 180.0, 0, 0.5, 0.5, 0.5, 20, 255, 66, 200, 1, 1, 0, 0)
+                DrawMarker(30, v.coords - vec3(0.0,0.0,0), 0, 0, 0, 0, 180.0, 0, 0.5, 0.5, 0.5, 120, 0, 66, 200, 0, 1, 0, 1)
                 if distance < 1.3 and IsControlJustPressed(0,38) then 
                     
-                    ExecuteCommand('openchest')
+                    ExecuteCommand('openfacchest')
                     Wait(1000)
                 end
             end
@@ -154,3 +233,5 @@ function GetClosestPlayers(range)
     end
     return plys
 end
+
+
