@@ -2650,11 +2650,10 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
     local source = source
     local user_id = vRP.getUserId(source)
 
-    vehList = exports.thunder_garages:garages_vehicle_list()
-
     if user_id then
-        -- 🔹 BAÚ DO CARRO (FUNCIONANDO PERFEITO)
+        -- 🔹 BAÚ DO CARRO (Já está funcionando, não precisa mudar)
         if data[1] == "VEHICLE" then
+            vehList = exports.thunder_garages:garages_vehicle_list()
             local vehicleNetworkId = NetworkGetEntityFromNetworkId(data[2])
 
             if vehicleNetworkId == 0 then
@@ -2731,14 +2730,32 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
             return { inventory = myVehicle, weight = weight, max_weight = vRP.getVehicleTrunk(name) }
         end
 
-        -- 🔹 BAÚ DE FACÇÃO (CORREÇÃO COMPLETA)
+        -- 🔹 BAÚ DE FACÇÃO (Correção para permissão e peso)
         if data[1] == "GROUP" then
             local facChestName = data[3] -- Nome do baú da facção
             local chestKey = "orgChest:" .. facChestName -- Ajuste para o formato da tabela
 
             print("SERVER: Requisição de baú GROUP para: " .. facChestName)
 
-            -- Consulta na tabela correta (`vrp_srv_data`) para buscar os itens do baú
+            -- 1️⃣ Verifica se o baú existe na `vrp_chests` e busca o peso correto e a permissão necessária
+            local chestInfo = MySQL.query.await("SELECT weight, permiss FROM vrp_chests WHERE name = ?", { facChestName })
+
+            if not chestInfo or #chestInfo == 0 then
+                print("SERVER: Baú de facção não encontrado na tabela vrp_chests: " .. facChestName)
+                return false
+            end
+
+            local maxWeight = chestInfo[1].weight or 5000 -- Usa o peso correto da tabela
+            local requiredPermission = chestInfo[1].permiss -- Permissão necessária
+
+            -- 2️⃣ Verifica se o jogador tem permissão para abrir o baú
+            if requiredPermission and not vRP.hasPermission(user_id, requiredPermission) then
+                TriggerClientEvent("Notify", source, "negado", "Você não tem permissão para acessar este baú!", 8000)
+                print("SERVER: Acesso negado ao baú " .. facChestName .. " para o usuário " .. user_id)
+                return false
+            end
+
+            -- 3️⃣ Consulta na `vrp_srv_data` para buscar os itens do baú
             local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
 
             if not rows or #rows == 0 then
@@ -2746,10 +2763,10 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
                 return false
             end
 
-            -- Decodifica os dados do baú da facção
+            -- 4️⃣ Decodifica os itens armazenados no baú
             local chestData = json.decode(rows[1].dvalue) or {}
 
-            -- Calcula o peso dos itens dentro do baú
+            -- 5️⃣ Calcula o peso real dos itens no baú
             local totalWeight = 0.0
             for k, v in pairs(chestData) do
                 if Items[v.item] then
@@ -2761,14 +2778,14 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
                 end
             end
 
-            -- Retorna os dados formatados para a NUI
+            -- 6️⃣ Retorna os dados formatados para a NUI
             local response = {
                 inventory = chestData,
                 weight = totalWeight,
-                max_weight = maxbau or 5000
+                max_weight = maxWeight -- Agora usa o peso correto da `vrp_chests`
             }
 
-            print("SERVER: Baú de facção encontrado: " .. json.encode(response))
+            print("SERVER: Baú de facção aberto com sucesso: " .. json.encode(response))
 
             return response
         end
