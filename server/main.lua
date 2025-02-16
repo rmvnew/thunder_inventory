@@ -739,52 +739,111 @@ RegisterTunnel.useItem = function(slot, amount)
                             return { error = "Você não possui essa droga." }
                         end
                     elseif item == "lockpick" then
-                        local plate, mName, mNet, mPortaMalas, mPrice, mLock, mModel = vRPclient.ModelName(source, 7)
-                        local plateUser = vRP.getUserByRegistration(plate)
-                        local plyCoords = GetEntityCoords(GetPlayerPed(source))
-                        local x, y, z = plyCoords[1], plyCoords[2], plyCoords[3]
+  
+                       
+                       -- Garantindo que o evento "receiveVehicleInfo" só seja registrado uma vez
+                        if not alreadyRegistered then
+                            RegisterNetEvent("receiveVehicleInfo")
+                            AddEventHandler("receiveVehicleInfo", function(plate, model, netId, locked)
+                                local user_id = vRP.getUserId(source)
+                                if not user_id then return end
 
-                        if plateUser then
-                            if mLock then
-                                if vRP.tryGetInventoryItem(user_id, "lockpick", 1, true, slot) then
-                                    TriggerClientEvent('closeInventory', source)
-                                    Wait(500)
+                                local plyCoords = GetEntityCoords(GetPlayerPed(source))
+                                local x, y, z = plyCoords[1], plyCoords[2], plyCoords[3]
 
+                                -- print("🔄 [SERVER] Dados recebidos do cliente:")
+                                -- print("Placa:", plate)
+                                -- print("Modelo:", model)
+                                -- print("Network ID:", netId)
+                                -- print("Está trancado:", locked)
+
+                                -- Verifica se temos um veículo válido
+                                if not plate or not netId then
+                                    print("❌ Nenhum veículo encontrado para destrancar.")
+                                    TriggerClientEvent("Notify", source, "negado", "Nenhum veículo encontrado por perto.", 6000)
+                                    return
+                                end
+
+                                local plateUser = vRP.getUserByRegistration(plate)
+                                -- print("📝 Buscando dono do veículo no banco de dados para a placa:", plate)
+
+                                if plateUser then
+                                    -- print("✔ Dono do veículo encontrado:", plateUser)
+
+                                    if locked == 1 then
+                                        TriggerClientEvent("Notify", source, "negado", "O veículo já está destrancado.", 6000)
+                                        return
+                                    end
+
+                                    -- Inicia a animação de arrombamento
                                     vTunnel._startAnimHotwired(source)
                                     vTunnel.blockButtons(source, true)
 
-                                    local finished = vRPclient.taskBar(source, 2500, math.random(7, 15))
-                                    if finished then
-                                        finished = vRPclient.taskBar(source, 1500, math.random(7, 15))
+                           
+                          
+                                    if vRP.tryGetInventoryItem(user_id, "lockpick", 1, true, slot) then
+                                        TriggerClientEvent('closeInventory', source)
+                                        Wait(500)
+
+                                        vTunnel._startAnimHotwired(source)
+                                        vTunnel.blockButtons(source, true)
+
+                                        local finished = vRPclient.taskBar(source, 2500, math.random(10, 15))
                                         if finished then
-                                            finished = vRPclient.taskBar(source, 1000, math.random(7, 15))
+                                            finished = vRPclient.taskBar(source, 2500, math.random(10, 15))
                                             if finished then
-                                                local entity = NetworkGetEntityFromNetworkId(mNet)
-                                                if entity then
-                                                    SetVehicleDoorsLocked(entity, 1)
+                                                finished = vRPclient.taskBar(source, 1500, math.random(7, 15))
+                                                if finished then
+                                                    finished = vRPclient.taskBar(source, 1000, math.random(7, 15))
+
+
+                                                    if finished then
+
+                                                        TriggerClientEvent("unlockVehicle", source, netId)
+                                                        TriggerClientEvent("vrp_sounds:source", source, "lock", 0.1)
+                                                        TriggerClientEvent("Notify", source, "negado", "Você destrancou o veículo, cuidado a polícia foi acionada.", 6000)
+                                                        TriggerClientEvent("SetAsNoLongerOwned", -1, netId)
+
+                                                        
+                                                    else
+                                                        TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
+                                                    end
+
+                                                else
+                                                    TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
                                                 end
-                                                TriggerClientEvent("vrp_sounds:source", source, "lock", 0.1)
-                                                TriggerClientEvent("Notify", source, "negado", "Você destrancou o veículo, cuidado a polícia foi acionada.", 6000)
-                                                vRP.sendLog("LOCKPICK", "**SUCESSO** O [ID: " .. user_id .. "] Roubou o veículo " .. mModel .. "(ID:" .. plateUser .. ") nas coordenadas: " .. x .. "," .. y .. "," .. z)
+
                                             else
                                                 TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
                                             end
                                         else
                                             TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
                                         end
-                                    else
-                                        TriggerClientEvent("Notify", source, "negado", "Falha ao tentar destrancar o veículo.", 6000)
-                                    end
 
+                                        -- Finaliza a animação e desbloqueia os botões em qualquer caso
+                                        vRPclient._stopAnim(source, false)
+                                        vTunnel.blockButtons(source, false)
+                                    end
+                           
+                       
+
+                                   
                                     -- Finaliza a animação e desbloqueia os botões em qualquer caso
                                     vRPclient._stopAnim(source, false)
                                     vTunnel.blockButtons(source, false)
+                                else
+                                    print("❌ Nenhum dono encontrado para a placa:", plate)
+                                    TriggerClientEvent("Notify", source, "negado", "Este veículo não está registrado.", 6000)
                                 end
-                            end
+                            end)
+
+                            alreadyRegistered = true
                         end
 
+                        -- Pegando informações do veículo mais próximo quando a lockpick for usada
+                        TriggerClientEvent("getNearestVehicleInfo", source)
 
-
+                        return { success = "Lockpick em uso." }
 
                     elseif item == "repairkit" then
                         if not vRPclient.isInVehicle(source) then
@@ -3505,3 +3564,53 @@ AddEventHandler('vTunnel.propNearbyStatus', function(found, propName, slot)
     end
 end)
 
+-- RegisterNetEvent("receiveVehicleInfo")
+-- AddEventHandler("receiveVehicleInfo", function(plate, model, netId, locked)
+--     local source = source
+--     local user_id = vRP.getUserId(source)
+
+--     print("🔄 [SERVER] Dados recebidos do cliente:")
+--     print("Placa:", plate)
+--     print("Modelo:", model)
+--     print("Network ID:", netId)
+--     print("Está trancado:", locked)
+
+--     if not plate then
+--         print("⚠ Nenhum veículo próximo identificado.")
+--         TriggerClientEvent("Notify", source, "negado", "Nenhum veículo encontrado por perto.", 6000)
+--         return
+--     end
+
+--     print("📝 Buscando dono do veículo no banco de dados para a placa:", plate)
+
+--     local plateUser = vRP.getUserByRegistration(plate)
+
+--     if plateUser then
+--         print("✔ Dono do veículo encontrado:", plateUser)
+--     else
+--         print("❌ Veículo sem dono registrado no banco de dados.")
+--     end
+-- end)
+
+
+-- RegisterCommand("testarveiculo", function(source)
+--     print("🔍 Testando captura de veículo...")
+--     TriggerClientEvent("getNearestVehicleInfo", source)
+-- end)
+
+
+
+-- RegisterCommand("destrancar", function(source)
+--     local ped = GetPlayerPed(source)
+--     local pos = GetEntityCoords(ped)
+--     local vehicle = GetClosestVehicle(pos.x, pos.y, pos.z, 5.0, 0, 71)
+
+--     if DoesEntityExist(vehicle) then
+--         print("🚗 Veículo encontrado para destrancamento.")
+--         SetVehicleDoorsLocked(vehicle, 1) -- Destranca o veículo
+--         TriggerClientEvent("Notify", source, "sucesso", "Veículo destrancado com sucesso!", 6000)
+--     else
+--         print("❌ Nenhum veículo próximo encontrado para destrancar.")
+--         TriggerClientEvent("Notify", source, "negado", "Nenhum veículo encontrado para destrancar.", 6000)
+--     end
+-- end)
