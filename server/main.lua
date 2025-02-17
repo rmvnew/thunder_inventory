@@ -2732,83 +2732,214 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
 
         -- 🔹 BAÚ DE FACÇÃO (Correção para permissão e peso)
         if data[1] == "GROUP" then
-            local facChestName = data[3] -- Nome do baú da facção
-            local chestKey = "orgChest:" .. facChestName -- Ajuste para o formato da tabela
 
-            print("SERVER: Requisição de baú GROUP para: " .. facChestName)
+            -- local facChestName = data[3] -- Nome do baú da facção
+            -- local chestKey = "orgChest:" .. facChestName -- Ajuste para o formato da tabela
 
-            -- 1️⃣ Verifica se o baú existe na `vrp_chests` e busca o peso correto e a permissão necessária
-            local chestInfo = MySQL.query.await("SELECT weight, permiss FROM vrp_chests WHERE name = ?", { facChestName })
+            -- print("SERVER: Requisição de baú GROUP para: " .. facChestName)
 
-            if not chestInfo or #chestInfo == 0 then
-                print("SERVER: Baú de facção não encontrado na tabela vrp_chests: " .. facChestName)
-                return false
-            end
+            -- -- 1️⃣ Verifica se o baú existe na `vrp_chests` e busca o peso correto e a permissão necessária
+            -- local chestInfo = MySQL.query.await("SELECT weight, permiss FROM vrp_chests WHERE name = ?", { facChestName })
 
-            local maxWeight = chestInfo[1].weight or 5000 -- Usa o peso correto da tabela
-            local requiredPermission = chestInfo[1].permiss -- Permissão necessária
+            -- if not chestInfo or #chestInfo == 0 then
+            --     print("SERVER: Baú de facção não encontrado na tabela vrp_chests: " .. facChestName)
+            --     return false
+            -- end
 
-            -- 2️⃣ Verifica se o jogador tem permissão para abrir o baú
-            if requiredPermission and not vRP.hasPermission(user_id, requiredPermission) then
-                TriggerClientEvent("Notify", source, "negado", "Você não tem permissão para acessar este baú!", 8000)
-                print("SERVER: Acesso negado ao baú " .. facChestName .. " para o usuário " .. user_id)
-                return false
-            end
+            -- local maxWeight = chestInfo[1].weight or 5000 -- Usa o peso correto da tabela
+            -- local requiredPermission = chestInfo[1].permiss -- Permissão necessária
+
+            -- -- 2️⃣ Verifica se o jogador tem permissão para abrir o baú
+            -- if requiredPermission and not vRP.hasPermission(user_id, requiredPermission) then
+            --     TriggerClientEvent("Notify", source, "negado", "Você não tem permissão para acessar este baú!", 8000)
+            --     print("SERVER: Acesso negado ao baú " .. facChestName .. " para o usuário " .. user_id)
+            --     return false
+            -- end
+
+            -- -- -- 3️⃣ Consulta na `vrp_srv_data` para buscar os itens do baú
+            -- -- local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
+
+            -- -- if not rows or #rows == 0 then
+            -- --     print("SERVER: Nenhum baú de facção encontrado para: " .. facChestName)
+            -- --     return false
+            -- -- end
 
             -- -- 3️⃣ Consulta na `vrp_srv_data` para buscar os itens do baú
             -- local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
 
             -- if not rows or #rows == 0 then
             --     print("SERVER: Nenhum baú de facção encontrado para: " .. facChestName)
+                
+            --     -- Criar um baú vazio na `vrp_srv_data`
+            --     local emptyChest = json.encode({})
+            --     MySQL.query.await("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, emptyChest })
+                
+            --     -- Notificar o jogador para tentar novamente
+            --     TriggerClientEvent("Notify", source, "aviso", "Baú criado! Tente abrir novamente.", 5000)
+
             --     return false
             -- end
-
-            -- 3️⃣ Consulta na `vrp_srv_data` para buscar os itens do baú
-            local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
-
-            if not rows or #rows == 0 then
-                print("SERVER: Nenhum baú de facção encontrado para: " .. facChestName)
-                
-                -- Criar um baú vazio na `vrp_srv_data`
-                local emptyChest = json.encode({})
-                MySQL.query.await("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, emptyChest })
-                
-                -- Notificar o jogador para tentar novamente
-                TriggerClientEvent("Notify", source, "aviso", "Baú criado! Tente abrir novamente.", 5000)
-
-                return false
-            end
             
 
-            -- 4️⃣ Decodifica os itens armazenados no baú
-            local chestData = json.decode(rows[1].dvalue) or {}
+            -- -- 4️⃣ Decodifica os itens armazenados no baú
+            -- local chestData = json.decode(rows[1].dvalue) or {}
 
-            -- 5️⃣ Calcula o peso real dos itens no baú
-            local totalWeight = 0.0
-            for k, v in pairs(chestData) do
-                if Items[v.item] then
-                    v.amount = parseInt(v.amount)
-                    v.name = Items[v.item].name
-                    v.peso = Items[v.item].weight
-                    v.index = v.item
-                    totalWeight = totalWeight + (Items[v.item].weight * v.amount)
+            -- -- 5️⃣ Calcula o peso real dos itens no baú
+            -- local totalWeight = 0.0
+            -- for k, v in pairs(chestData) do
+            --     if Items[v.item] then
+            --         v.amount = parseInt(v.amount)
+            --         v.name = Items[v.item].name
+            --         v.peso = Items[v.item].weight
+            --         v.index = v.item
+            --         totalWeight = totalWeight + (Items[v.item].weight * v.amount)
+            --     end
+            -- end
+
+            -- -- 6️⃣ Retorna os dados formatados para a NUI
+            -- local response = {
+            --     inventory = chestData,
+            --     weight = totalWeight,
+            --     max_weight = maxWeight -- Agora usa o peso correto da `vrp_chests`
+            -- }
+
+            -- -- print("SERVER: Baú de facção aberto com sucesso: " .. json.encode(response))
+
+            -- return response
+
+
+            if OpennedOrg[data[3]] then return end
+            vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a","idle_a_female"} }, false)
+            if (Chests[data[3]] and Chests[data[3]].permission ~= nil and vRP.hasPermission(user_id, Chests[data[3]].permission)) or (Chests[data[3]] and Chests[data[3]].permission == true) then
+                if dataOrgChest[data[3]] == nil then
+                    local rows = vRP.getSData("orgChest:" .. data[3])
+                    dataOrgChest[data[3]] = { json.decode(rows) or {} }
                 end
+
+                local myOrgChest = {}
+                local weight = 0.0
+                for k, v in pairs(dataOrgChest[data[3]][1]) do
+                    if Items[v.item] then
+                        v["amount"] = parseInt(v["amount"])
+						v["name"] = Items[v["item"]].name
+						v["peso"] = Items[v["item"]].weight
+						v["index"] = v["item"]
+						v["key"] = v["item"]
+						v["slot"] = k
+                        myOrgChest[k] = v
+                        weight = weight + (Items[v.item].weight * parseInt(v["amount"]))
+                    end
+                end
+                OpennedChestUser[user_id] = { tipo = "GROUP", name = data[3] }
+                OpennedOrg[data[3]] = user_id
+                return { inventory = myOrgChest, weight = weight, max_weight = Chests[data[3]].weight }
+            else
+                TriggerClientEvent("Notify", source, "negado", "Você não tem permissão para acessar esse bau!", 8000)
             end
+        elseif data == "HOUSE" then
+            if OpennedHouse[id] then return end
+             vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a","idle_a_female"} }, false)
+            if dataHouseChest[id] == nil then
+				local rows = vRP.query("mirtin/allInfoHome", { id = id })
+				dataHouseChest[id] = { json.decode(rows[1].bau) or {}, houseID, maxbau }
+			end
 
-            -- 6️⃣ Retorna os dados formatados para a NUI
-            local response = {
-                inventory = chestData,
-                weight = totalWeight,
-                max_weight = maxWeight -- Agora usa o peso correto da `vrp_chests`
-            }
-
-            -- print("SERVER: Baú de facção aberto com sucesso: " .. json.encode(response))
-
-            return response
+			local myHouseChest = {}
+			local weight = 0.0
+			for k, v in pairs(dataHouseChest[id][1]) do
+				if Items[v.item] then
+                    if Items[v.item] then
+                        v["amount"] = parseInt(v["amount"])
+						v["name"] = Items[v["item"]].name
+						v["peso"] = Items[v["item"]].weight
+						v["index"] = v["item"]
+						v["key"] = v["item"]
+						v["slot"] = k
+                        myHouseChest[k] = v
+                        weight = weight + (Items[v.item].weight * parseInt(v["amount"]))
+                    end
+				end
+			end
+            OpennedChestUser[user_id] = { tipo = "HOUSE", name = id }
+            OpennedHouse[id] = user_id
+           -- vRPclient._stopAnim(source, false)
+            return { inventory = myHouseChest, weight = weight, max_weight = maxbau }
         end
     end
 end
 
+
+RegisterNetEvent("mirtin:openHouseChest")
+AddEventHandler("mirtin:openHouseChest", function(houseID)
+    local source = source
+    local user_id = vRP.getUserId(source)
+    if not user_id then return end
+
+    local chestKey = "houseChest:" .. houseID
+
+    -- 🔍 Verifica se o baú da casa já existe no banco de dados
+    local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
+
+    if not rows or #rows == 0 then
+        -- 🚀 Criando um novo baú vazio no banco de dados
+        MySQL.execute("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, json.encode({}) })
+
+        -- 🔔 Notifica o jogador e pede para tentar novamente
+        TriggerClientEvent("Notify", source, "aviso", "Baú criado! Tente abrir novamente.", 5000)
+        return
+    end
+
+    -- 📦 Se o baú já existir, obtém os itens armazenados
+    local chestData = json.decode(rows[1].dvalue) or {}
+
+    -- 🏡 Obtém a capacidade do baú (minBau) da tabela `mirtin_homes`
+    local houseData = MySQL.query.await("SELECT minBau FROM mirtin_homes WHERE id = ?", { houseID })
+    
+    local maxWeight = 5000 -- Define um valor padrão caso não encontre no banco
+    if houseData and #houseData > 0 then
+        maxWeight = houseData[1].minBau or 5000
+    end
+
+    -- 🔥 Envia os dados do baú para o cliente abrir a NUI
+    local chestInfo = {
+        chest_type = "HOUSE",
+        inventory = chestData,
+        maxWeight = maxWeight
+    }
+
+    print("SERVER: Enviando dados do baú para o cliente:", json.encode(chestInfo, { indent = true }))
+    TriggerClientEvent("mirtin:openInventory", source, chestInfo)
+end)
+
+
+RegisterNetEvent("mirtin:closeChest")
+AddEventHandler("mirtin:closeChest", function(chestType, chestID, inventory)
+    local source = source
+    local user_id = vRP.getUserId(source)
+    if not user_id then return end
+
+    local chestKey
+    if chestType == "HOUSE" then
+        chestKey = "houseChest:" .. chestID
+    elseif chestType == "GROUP" then
+        chestKey = "orgChest:" .. chestID
+    else
+        return
+    end
+
+    local jsonData = json.encode(inventory)
+    print("SERVER: Salvando baú automaticamente ao fechar:", chestKey, jsonData) -- ✅ DEBUG
+
+    local exists = MySQL.scalar.await("SELECT COUNT(*) FROM vrp_srv_data WHERE dkey = ?", { chestKey })
+
+    if exists and exists > 0 then
+        MySQL.execute("UPDATE vrp_srv_data SET dvalue = ? WHERE dkey = ?", { jsonData, chestKey })
+        print("SERVER: Baú atualizado no banco!") -- ✅ DEBUG
+    else
+        MySQL.insert("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, jsonData })
+        print("SERVER: Novo baú criado no banco!") -- ✅ DEBUG
+    end
+end)
 
 
 RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
@@ -2839,7 +2970,7 @@ RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
                         return { error = "Porta malas cheio."}
                     end
                 else
-                    return { error = "Você não está com esse bau aberto" }
+                    return { error = "1 Você não está com esse bau aberto" }
                 end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "GROUP" then
                 local bau = OpennedChestUser[user_id].name
@@ -2863,7 +2994,7 @@ RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
                         return { error = "Bau está cheio."}
                     end
                 else
-                    return { error = "Você não está com esse bau aberto" }
+                    return { error = "2 Você não está com esse bau aberto" }
                 end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "HOUSE" then
                 local bau = OpennedChestUser[user_id].name
@@ -2881,7 +3012,7 @@ RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
                         return { error = "Bau está cheio."}
                     end
                 else
-                    return { error = "Você não está com esse bau aberto" }
+                    return { error = "3 Você não está com esse bau aberto" }
                 end
             end
 		end
@@ -2914,7 +3045,7 @@ RegisterTunnel.takeChestItem = function(item, amount, playerslot, slot)
                         return { error = "Você está tentando dumpar itens." }
                     end
 				else
-					return { error = "Você não está com esse bau aberto." }
+					return { error = "4 Você não está com esse bau aberto." }
 				end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "GROUP" then
                 local bau = OpennedChestUser[user_id].name
@@ -2941,7 +3072,7 @@ RegisterTunnel.takeChestItem = function(item, amount, playerslot, slot)
                         return { error = "Você está tentando dumpar itens." }
                     end
 				else
-					return { error = "Você não está com esse bau aberto." }
+					return { error = "5 Você não está com esse bau aberto." }
 				end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "HOUSE" then
                 
@@ -2965,12 +3096,13 @@ RegisterTunnel.takeChestItem = function(item, amount, playerslot, slot)
                         return { error = "Você está tentando dumpar itens." }
                     end
 				else
-					return { error = "Você não está com esse bau aberto." }
+					return { error = "6 Você não está com esse bau aberto." }
 				end
 			end
 		end
 	end
 end
+
 
 RegisterCommand('organizar', function(source, args)
     local source = source
@@ -3552,6 +3684,7 @@ function save_org_chest()
 		if OpennedOrg[k] == nil then
             count = count + 1
 			vRP.setSData("orgChest:" .. k, json.encode(dataOrgChest[k][1]))
+           
 			dataOrgChest[k] = nil
 		end
 	end

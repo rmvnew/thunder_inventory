@@ -9,13 +9,37 @@ const Routes = {
         window.classInstances["left"] = new Inventory(userInventory)
         $("#inventory").show()
     },
+
     "OPEN_CHEST": async function(payload){
-        $(".left-main").css("display", "none");
-        let userInventory = await Client("GET_INVENTORY")
-        window.classInstances["left"] = new Inventory(userInventory)
-        window.classInstances["right"] = new Chest(payload)
-        $("#inventory").show()
-    },    
+
+    
+    // Aplica a normalização
+    payload = mapChestPayload(payload);
+
+    const inventory = payload.inventory
+    const maxWeight = payload.maxWeight    
+
+    console.log('>>>',inventory);
+    console.log('>>>',maxWeight);
+    
+    
+
+    $(".left-main").css("display", "none");
+    let userInventory = await Client("GET_INVENTORY");
+    
+    // 🔥 Aqui garantimos que a Chest recebe um maxWeight válido
+    window.classInstances["left"] = new Inventory(userInventory);
+    window.classInstances["right"] = new Chest({
+        ...payload,
+        maxWeight: maxWeight || 5000 // Fallback caso ainda esteja undefined
+    });
+
+    $("#inventory").show();
+},
+
+
+
+  
     "CLOSE_INVENTORY": async function(payload){
         const ignoreRight = payload.ignoreRight || false
         Client("CLOSE_INVENTORY",{
@@ -45,8 +69,34 @@ const Routes = {
             let userInventory = await Client("GET_INVENTORY")
             window.classInstances["left"] = new Inventory(userInventory)
         }
-    }
+    },
+    "FORCE_CLOSE_CHEST": async function(payload) {
+    console.log("Fechando baú e salvando dados...");
+    Client("mirtin:closeChest", {
+        chestType: payload.chest_type,
+        chestID: payload.chest_id,
+        inventory: window.classInstances["right"].items
+    });
+
+    Close(); // Fecha o inventário
 }
+
+}
+
+
+function mapChestPayload(payload) {
+    console.log("Payload recebido antes do mapeamento:", JSON.stringify(payload, null, 2));
+
+    // Normaliza os nomes das propriedades
+    payload.inventory = payload.inventory || payload.items || [];
+    payload.maxWeight = payload.maxWeight || payload.max_weight || 5000; // Fallback para evitar undefined
+
+    console.log("Payload unificado após mapeamento:", JSON.stringify(payload, null, 2));
+    return payload;
+}
+
+
+
 
 $(() => {
     window.addEventListener('message', async ({ data }) => {
