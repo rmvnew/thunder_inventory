@@ -2755,13 +2755,30 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
                 return false
             end
 
+            -- -- 3️⃣ Consulta na `vrp_srv_data` para buscar os itens do baú
+            -- local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
+
+            -- if not rows or #rows == 0 then
+            --     print("SERVER: Nenhum baú de facção encontrado para: " .. facChestName)
+            --     return false
+            -- end
+
             -- 3️⃣ Consulta na `vrp_srv_data` para buscar os itens do baú
             local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
 
             if not rows or #rows == 0 then
                 print("SERVER: Nenhum baú de facção encontrado para: " .. facChestName)
+                
+                -- Criar um baú vazio na `vrp_srv_data`
+                local emptyChest = json.encode({})
+                MySQL.query.await("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, emptyChest })
+                
+                -- Notificar o jogador para tentar novamente
+                TriggerClientEvent("Notify", source, "aviso", "Baú criado! Tente abrir novamente.", 5000)
+
                 return false
             end
+            
 
             -- 4️⃣ Decodifica os itens armazenados no baú
             local chestData = json.decode(rows[1].dvalue) or {}
@@ -2785,7 +2802,7 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
                 max_weight = maxWeight -- Agora usa o peso correto da `vrp_chests`
             }
 
-            print("SERVER: Baú de facção aberto com sucesso: " .. json.encode(response))
+            -- print("SERVER: Baú de facção aberto com sucesso: " .. json.encode(response))
 
             return response
         end
