@@ -2812,6 +2812,8 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
             vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a","idle_a_female"} }, false)
             if (Chests[data[3]] and Chests[data[3]].permission ~= nil and vRP.hasPermission(user_id, Chests[data[3]].permission)) or (Chests[data[3]] and Chests[data[3]].permission == true) then
                 if dataOrgChest[data[3]] == nil then
+
+
                     local rows = vRP.getSData("orgChest:" .. data[3])
                     dataOrgChest[data[3]] = { json.decode(rows) or {} }
                 end
@@ -2830,6 +2832,10 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
                         weight = weight + (Items[v.item].weight * parseInt(v["amount"]))
                     end
                 end
+
+              
+
+
                 OpennedChestUser[user_id] = { tipo = "GROUP", name = data[3] }
                 OpennedOrg[data[3]] = user_id
                 return { inventory = myOrgChest, weight = weight, max_weight = Chests[data[3]].weight }
@@ -2851,41 +2857,7 @@ AddEventHandler("mirtin:openHouseChest", function(houseID)
 
   
 
-    -- local chestKey = "houseChest:" .. houseID
-
-    -- -- 🔍 Verifica se o baú da casa já existe no banco de dados
-    -- local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
-
-    -- if not rows or #rows == 0 then
-    --     -- 🚀 Criando um novo baú vazio no banco de dados
-    --     MySQL.execute("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, json.encode({}) })
-
-    --     -- 🔔 Notifica o jogador e pede para tentar novamente
-    --     TriggerClientEvent("Notify", source, "aviso", "Baú criado! Tente abrir novamente.", 5000)
-    --     return
-    -- end
-
-    -- -- 📦 Se o baú já existir, obtém os itens armazenados
-    -- local chestData = json.decode(rows[1].dvalue) or {}
-
-    -- -- 🏡 Obtém a capacidade do baú (minBau) da tabela `mirtin_homes`
-    -- local houseData = MySQL.query.await("SELECT minBau FROM mirtin_homes WHERE id = ?", { houseID })
-    
-    -- local maxWeight = 5000 -- Define um valor padrão caso não encontre no banco
-    -- if houseData and #houseData > 0 then
-    --     maxWeight = houseData[1].minBau or 5000
-    -- end
-
-    -- -- 🔥 Envia os dados do baú para o cliente abrir a NUI
-    -- local chestInfo = {
-    --     chest_type = "HOUSE",
-    --     inventory = chestData,
-    --     maxWeight = maxWeight
-    -- }
-
-    -- print("SERVER: Enviando dados do baú para o cliente:", json.encode(chestInfo, { indent = true }))
-    -- TriggerClientEvent("mirtin:openInventory", source, chestInfo)
-
+   
 
     local chestKey = "houseChest:" .. houseID
     local user_id = vRP.getUserId(source)
@@ -2903,7 +2875,7 @@ AddEventHandler("mirtin:openHouseChest", function(houseID)
     end
 
     -- 📦 Se o baú já existir, obtém os itens armazenados
-    local chestData = json.decode(rows[1].dvalue) or {}
+    dataHouseChest = json.decode(rows[1].dvalue) or {}
 
     -- 🏡 Obtém a capacidade do baú (minBau) da tabela `mirtin_homes`
     local houseData = MySQL.query.await("SELECT minBau FROM mirtin_homes WHERE id = ?", { houseID })
@@ -2913,10 +2885,21 @@ AddEventHandler("mirtin:openHouseChest", function(houseID)
         maxWeight = houseData[1].minBau or 5000
     end
 
+    if dataHouseChest[chestKey] == nil then
+
+        
+
+        local rows = vRP.getSData(chestKey)
+        dataHouseChest[chestKey] = { json.decode(rows) or {} }
+
+        print(">>>>",json.encode(dataHouseChest[chestKey]))
+    end
+
+
     -- 🔥 Constrói o inventário e calcula o peso
     local myHouseChest = {}
     local weight = 0.0
-    for k, v in pairs(chestData) do
+    for k, v in pairs(dataHouseChest) do
         if Items[v.item] then
             v["amount"] = parseInt(v["amount"])
             v["name"] = Items[v["item"]].name
@@ -2937,9 +2920,12 @@ AddEventHandler("mirtin:openHouseChest", function(houseID)
         maxWeight = maxWeight
     }
 
+    OpennedChestUser[user_id] = { tipo = "HOUSE", name = chestKey }
+    OpennedHouse[chestKey] = user_id
     -- print("SERVER: Enviando dados do baú para o cliente:", json.encode(chestInfo, { indent = true }))
     TriggerClientEvent("mirtin:openInventory", source, chestInfo)
 
+    
 
 end)
 
@@ -3005,6 +2991,9 @@ RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
                     return { error = "1 Você não está com esse bau aberto" }
                 end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "GROUP" then
+
+                print("2 #######  ==> ",OpennedChestUser[user_id].tipo)
+
                 local bau = OpennedChestUser[user_id].name
                 if OpennedOrg[bau] and OpennedOrg[bau] == user_id and dataOrgChest[bau][1] ~= nil then
                     if vRP.computeItemsWeight(dataOrgChest[bau][1]) + vRP.getItemWeight(inv[playerslot].item) * parseInt(amount) <= Chests[bau].weight then
@@ -3029,9 +3018,22 @@ RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
                     return { error = "2 Você não está com esse bau aberto" }
                 end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "HOUSE" then
+
+                print(" 3 #######  ==> ",OpennedChestUser[user_id].tipo)
+
                 local bau = OpennedChestUser[user_id].name
+
+                print("DEBUG: Baú da casa está aberto?", OpennedHouse[bau] ~= nil)
+                print("DEBUG: Baú pertence ao jogador?", OpennedHouse[bau] == user_id)
+                print("DEBUG: O baú contém itens?", dataHouseChest[bau][1] ~= nil)
+               
+
+               
+
                 if OpennedHouse[bau] and OpennedHouse[bau] == user_id and dataHouseChest[bau][1] ~= nil then
-                    if vRP.computeItemsWeight(dataHouseChest[bau][1]) + vRP.getItemWeight(inv[playerslot].item) * parseInt(amount) <= parseInt(dataHouseChest[bau][3]) then
+                    
+                    -- if vRP.computeItemsWeight(dataHouseChest[bau][1]) + vRP.getItemWeight(inv[playerslot].item) * parseInt(amount) <= parseInt(dataHouseChest[bau][3]) then
+                        
                         if vRP.tryGetInventoryItem(user_id, inv[playerslot].item, amount, true, playerslot) then
                             if dataHouseChest[bau][1][tostring(targetslot)] then
                                 dataHouseChest[bau][1][tostring(targetslot)].amount = dataHouseChest[bau][1][tostring(targetslot)].amount + amount
@@ -3040,9 +3042,11 @@ RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
                             end
                         end
                         vRP.sendLog("https://discord.com/api/webhooks/1279010668221300787/f-wBdMcgh32JU7tSYXXPE19rFfXNhuagqvUeUmXwU0jSqmFjTLnQTBstb1N6rThdC5S-","O ID " .. user_id .. " colocou o ITEM: "..inv[playerslot].item.." no bau da CASA: "..bau.." na quantidade de " .. amount .."x.")
-                    else
-                        return { error = "Bau está cheio."}
-                    end
+                   
+                    -- else
+                    --     return { error = "Bau está cheio."}
+                    -- end
+
                 else
                     return { error = "3 Você não está com esse bau aberto" }
                 end
@@ -3080,6 +3084,9 @@ RegisterTunnel.takeChestItem = function(item, amount, playerslot, slot)
 					return { error = "4 Você não está com esse bau aberto." }
 				end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "GROUP" then
+
+                print(" 5 #######  ==> ",OpennedChestUser[user_id].tipo)
+
                 local bau = OpennedChestUser[user_id].name
 				if OpennedOrg[bau] and dataOrgChest[bau] and OpennedOrg[bau] == user_id and dataOrgChest[bau][1][tostring(slot)] and dataOrgChest[bau][1][tostring(slot)].item ~= nil then
                     if dataOrgChest[bau][1][tostring(slot)].amount >= amount then
@@ -3107,6 +3114,8 @@ RegisterTunnel.takeChestItem = function(item, amount, playerslot, slot)
 					return { error = "5 Você não está com esse bau aberto." }
 				end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "HOUSE" then
+
+                print(" 6 #######  ==> ",OpennedChestUser[user_id].tipo)
                 
                 local bau = OpennedChestUser[user_id].name
 				if OpennedHouse[bau] and dataHouseChest[bau] and OpennedHouse[bau] == user_id and dataHouseChest[bau][1][tostring(slot)] and dataHouseChest[bau][1][tostring(slot)].item ~= nil then
