@@ -3019,37 +3019,42 @@ RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
                 end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "HOUSE" then
 
-                print(" 3 #######  ==> ",OpennedChestUser[user_id].tipo)
-
+                print(" 3 #######  ==> ", OpennedChestUser[user_id].tipo)
+            
                 local bau = OpennedChestUser[user_id].name
-
+            
                 print("DEBUG: Baú da casa está aberto?", OpennedHouse[bau] ~= nil)
                 print("DEBUG: Baú pertence ao jogador?", OpennedHouse[bau] == user_id)
                 print("DEBUG: O baú contém itens?", dataHouseChest[bau][1] ~= nil)
-               
-
-               
-
+            
                 if OpennedHouse[bau] and OpennedHouse[bau] == user_id and dataHouseChest[bau][1] ~= nil then
-                    
+            
                     -- if vRP.computeItemsWeight(dataHouseChest[bau][1]) + vRP.getItemWeight(inv[playerslot].item) * parseInt(amount) <= parseInt(dataHouseChest[bau][3]) then
-                        
-                        if vRP.tryGetInventoryItem(user_id, inv[playerslot].item, amount, true, playerslot) then
-                            if dataHouseChest[bau][1][tostring(targetslot)] then
-                                dataHouseChest[bau][1][tostring(targetslot)].amount = dataHouseChest[bau][1][tostring(targetslot)].amount + amount
-                            else
-                                dataHouseChest[bau][1][tostring(targetslot)] = { amount = amount, item = inv[playerslot].item }
-                            end
+            
+                    if vRP.tryGetInventoryItem(user_id, inv[playerslot].item, amount, true, playerslot) then
+                        if dataHouseChest[bau][1][tostring(targetslot)] then
+                            dataHouseChest[bau][1][tostring(targetslot)].amount = dataHouseChest[bau][1][tostring(targetslot)].amount + amount
+                        else
+                            dataHouseChest[bau][1][tostring(targetslot)] = { amount = amount, item = inv[playerslot].item }
                         end
-                        vRP.sendLog("https://discord.com/api/webhooks/1279010668221300787/f-wBdMcgh32JU7tSYXXPE19rFfXNhuagqvUeUmXwU0jSqmFjTLnQTBstb1N6rThdC5S-","O ID " .. user_id .. " colocou o ITEM: "..inv[playerslot].item.." no bau da CASA: "..bau.." na quantidade de " .. amount .."x.")
-                   
+                    end
+
+                    print("Bau", bau)
+            
+                    -- ✅ **Salvando o estado do baú no banco de dados**
+                    vRP.setSData(bau, json.encode(dataHouseChest[bau][1]))
+            
+                    vRP.sendLog("https://discord.com/api/webhooks/1279010668221300787/f-wBdMcgh32JU7tSYXXPE19rFfXNhuagqvUeUmXwU0jSqmFjTLnQTBstb1N6rThdC5S-",
+                        "O ID " .. user_id .. " colocou o ITEM: "..inv[playerslot].item.." no bau da CASA: "..bau.." na quantidade de " .. amount .."x.")
+            
                     -- else
                     --     return { error = "Bau está cheio."}
                     -- end
-
+            
                 else
                     return { error = "3 Você não está com esse bau aberto" }
                 end
+            
             end
 		end
 	end
@@ -3115,20 +3120,31 @@ RegisterTunnel.takeChestItem = function(item, amount, playerslot, slot)
 				end
             elseif OpennedChestUser[user_id] and OpennedChestUser[user_id].tipo == "HOUSE" then
 
-                print(" 6 #######  ==> ",OpennedChestUser[user_id].tipo)
-                
+                print(" 6 #######  ==> ", OpennedChestUser[user_id].tipo)
+            
                 local bau = OpennedChestUser[user_id].name
-				if OpennedHouse[bau] and dataHouseChest[bau] and OpennedHouse[bau] == user_id and dataHouseChest[bau][1][tostring(slot)] and dataHouseChest[bau][1][tostring(slot)].item ~= nil then
+            
+                if OpennedHouse[bau] and dataHouseChest[bau] and OpennedHouse[bau] == user_id and dataHouseChest[bau][1][tostring(slot)] and dataHouseChest[bau][1][tostring(slot)].item ~= nil then
                     if dataHouseChest[bau][1][tostring(slot)].amount >= amount then
-                    
+            
                         if vRP.computeInvWeight(user_id) + vRP.getItemWeight(tostring(dataHouseChest[bau][1][tostring(slot)].item)) * parseInt(amount) <= vRP.getInventoryMaxWeight(user_id) then
-                            vRP.giveInventoryItem(user_id, dataHouseChest[bau][1][tostring(slot)].item,amount, true, playerslot)
-                            vRP.sendLog("https://discord.com/api/webhooks/1279010668221300787/f-wBdMcgh32JU7tSYXXPE19rFfXNhuagqvUeUmXwU0jSqmFjTLnQTBstb1N6rThdC5S-","O ID " .. user_id .. " retirou o ITEM: "..dataHouseChest[bau][1][tostring(slot)].item.." do bau da CASA: "..bau.." na quantidade de " .. amount .."x.")
-                            
+                            vRP.giveInventoryItem(user_id, dataHouseChest[bau][1][tostring(slot)].item, amount, true, playerslot)
+            
+                            -- ✅ Log da retirada de item
+                            vRP.sendLog("https://discord.com/api/webhooks/1279010668221300787/f-wBdMcgh32JU7tSYXXPE19rFfXNhuagqvUeUmXwU0jSqmFjTLnQTBstb1N6rThdC5S-",
+                                "O ID " .. user_id .. " retirou o ITEM: "..dataHouseChest[bau][1][tostring(slot)].item.." do baú da CASA: "..bau.." na quantidade de " .. amount .."x.")
+            
+                            -- ✅ Atualiza o estado do baú **antes** de salvar
                             dataHouseChest[bau][1][tostring(slot)].amount = dataHouseChest[bau][1][tostring(slot)].amount - amount
+            
+                            -- Se a quantidade for 0, remove o item do baú
                             if dataHouseChest[bau][1][tostring(slot)].amount <= 0 then
                                 dataHouseChest[bau][1][tostring(slot)] = nil
                             end
+            
+                            -- ✅ Agora sim, salva a nova versão do baú no banco de dados
+                            vRP.setSData(bau, json.encode(dataHouseChest[bau][1]))
+            
                             return { success = "Item retirado com sucesso" }
                         else
                             return { error = "Mochila cheia." }
@@ -3136,10 +3152,11 @@ RegisterTunnel.takeChestItem = function(item, amount, playerslot, slot)
                     else
                         return { error = "Você está tentando dumpar itens." }
                     end
-				else
-					return { error = "6 Você não está com esse bau aberto." }
-				end
-			end
+                else
+                    return { error = "6 Você não está com esse baú aberto." }
+                end
+            end
+            
 		end
 	end
 end
