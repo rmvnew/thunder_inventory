@@ -31,8 +31,9 @@ const Routes = {
     window.classInstances["left"] = new Inventory(userInventory);
     window.classInstances["right"] = new Chest({
         ...payload,
-        maxWeight: maxWeight || 5000 // Fallback caso ainda esteja undefined
+        max_weight: payload.maxWeight || payload.max_weight || 5000 // Força o formato correto
     });
+    
 
     $("#inventory").show();
 },
@@ -85,13 +86,13 @@ const Routes = {
 
 
 function mapChestPayload(payload) {
-    console.log("Payload recebido antes do mapeamento:", JSON.stringify(payload, null, 2));
+    // console.log("Payload recebido antes do mapeamento:", JSON.stringify(payload, null, 2));
 
     // Normaliza os nomes das propriedades
     payload.inventory = payload.inventory || payload.items || [];
     payload.maxWeight = payload.maxWeight || payload.max_weight || 5000; // Fallback para evitar undefined
 
-    console.log("Payload unificado após mapeamento:", JSON.stringify(payload, null, 2));
+    // console.log("Payload unificado após mapeamento:", JSON.stringify(payload, null, 2));
     return payload;
 }
 

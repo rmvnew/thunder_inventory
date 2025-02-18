@@ -101,14 +101,37 @@ RegisterCommand("openchest",function()
 end)
 
 
+-- RegisterNetEvent("mirtin:openInventory")
+-- AddEventHandler("mirtin:openInventory", function(chestInfo)
+--     print("CLIENT: Recebendo dados do baú:", json.encode(chestInfo, { indent = true }))
+
+--     -- Garante que os dados não sejam nulos
+--     chestInfo = chestInfo or {}
+--     chestInfo.inventory = chestInfo.inventory or {}
+--     chestInfo.maxWeight = chestInfo.maxWeight or 5000
+
+--     -- Envia os dados para a NUI abrir corretamente
+--     SendNUIMessage({ route = "OPEN_CHEST", payload = chestInfo })
+
+--     -- Ativa o foco na interface para o jogador interagir
+--     SetNuiFocus(true, true)
+-- end)
+
+
 RegisterNetEvent("mirtin:openInventory")
 AddEventHandler("mirtin:openInventory", function(chestInfo)
-    print("CLIENT: Recebendo dados do baú:", json.encode(chestInfo, { indent = true }))
+    -- print("CLIENT: Recebendo dados do baú:", json.encode(chestInfo, { indent = true }))
 
     -- Garante que os dados não sejam nulos
     chestInfo = chestInfo or {}
     chestInfo.inventory = chestInfo.inventory or {}
     chestInfo.maxWeight = chestInfo.maxWeight or 5000
+
+    -- Garante que maxWeight seja um número válido
+    chestInfo.maxWeight = tonumber(chestInfo.maxWeight) or 5000
+
+    -- Log para verificar o valor de maxWeight antes de enviar para a NUI
+    -- print("Valor de chestInfo.maxWeight:", chestInfo.maxWeight)
 
     -- Envia os dados para a NUI abrir corretamente
     SendNUIMessage({ route = "OPEN_CHEST", payload = chestInfo })
@@ -116,7 +139,6 @@ AddEventHandler("mirtin:openInventory", function(chestInfo)
     -- Ativa o foco na interface para o jogador interagir
     SetNuiFocus(true, true)
 end)
-
 
 
 
@@ -172,23 +194,23 @@ function API.SearchFacChest()
     end
 end
 
--------------------------------------------
--- 4) EVENTO PARA BAÚ DE CASA (se aplicável)
--------------------------------------------
-RegisterNetEvent("mirt1n:myHouseChest", function(id, houseid, maxBau)
-    print(id, maxBau)
-    local response = Remote.requireChest({"HOUSE", maxBau, id})
-    local source = source
-    if vRP.getHealth(source) <= 101 then
-        TriggerEvent('Notify','negado','Você não pode acessar o inventário agora.',5000)
-        return
-    end
-    if response then
-        response.chest_type = "HOUSE"
-        SendNUIMessage({ route = "OPEN_CHEST", payload = response })
-        SetNuiFocus(true, true)
-    end
-end)
+-- -------------------------------------------
+-- -- 4) EVENTO PARA BAÚ DE CASA (se aplicável)
+-- -------------------------------------------
+-- RegisterNetEvent("mirt1n:myHouseChest", function(id, houseid, maxBau)
+--     print(id, maxBau)
+--     local response = Remote.requireChest({"HOUSE", maxBau, id})
+--     local source = source
+--     if vRP.getHealth(source) <= 101 then
+--         TriggerEvent('Notify','negado','Você não pode acessar o inventário agora.',5000)
+--         return
+--     end
+--     if response then
+--         response.chest_type = "HOUSE"
+--         SendNUIMessage({ route = "OPEN_CHEST", payload = response })
+--         SetNuiFocus(true, true)
+--     end
+-- end)
 
 
 

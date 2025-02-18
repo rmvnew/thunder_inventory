@@ -2836,34 +2836,8 @@ RegisterTunnel.requireChest = function(data, maxbau, id)
             else
                 TriggerClientEvent("Notify", source, "negado", "Você não tem permissão para acessar esse bau!", 8000)
             end
-        elseif data == "HOUSE" then
-            if OpennedHouse[id] then return end
-             vRPclient._playAnim(source, true, { { "amb@prop_human_parking_meter@female@idle_a","idle_a_female"} }, false)
-            if dataHouseChest[id] == nil then
-				local rows = vRP.query("mirtin/allInfoHome", { id = id })
-				dataHouseChest[id] = { json.decode(rows[1].bau) or {}, houseID, maxbau }
-			end
 
-			local myHouseChest = {}
-			local weight = 0.0
-			for k, v in pairs(dataHouseChest[id][1]) do
-				if Items[v.item] then
-                    if Items[v.item] then
-                        v["amount"] = parseInt(v["amount"])
-						v["name"] = Items[v["item"]].name
-						v["peso"] = Items[v["item"]].weight
-						v["index"] = v["item"]
-						v["key"] = v["item"]
-						v["slot"] = k
-                        myHouseChest[k] = v
-                        weight = weight + (Items[v.item].weight * parseInt(v["amount"]))
-                    end
-				end
-			end
-            OpennedChestUser[user_id] = { tipo = "HOUSE", name = id }
-            OpennedHouse[id] = user_id
-           -- vRPclient._stopAnim(source, false)
-            return { inventory = myHouseChest, weight = weight, max_weight = maxbau }
+
         end
     end
 end
@@ -2875,7 +2849,46 @@ AddEventHandler("mirtin:openHouseChest", function(houseID)
     local user_id = vRP.getUserId(source)
     if not user_id then return end
 
+  
+
+    -- local chestKey = "houseChest:" .. houseID
+
+    -- -- 🔍 Verifica se o baú da casa já existe no banco de dados
+    -- local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
+
+    -- if not rows or #rows == 0 then
+    --     -- 🚀 Criando um novo baú vazio no banco de dados
+    --     MySQL.execute("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, json.encode({}) })
+
+    --     -- 🔔 Notifica o jogador e pede para tentar novamente
+    --     TriggerClientEvent("Notify", source, "aviso", "Baú criado! Tente abrir novamente.", 5000)
+    --     return
+    -- end
+
+    -- -- 📦 Se o baú já existir, obtém os itens armazenados
+    -- local chestData = json.decode(rows[1].dvalue) or {}
+
+    -- -- 🏡 Obtém a capacidade do baú (minBau) da tabela `mirtin_homes`
+    -- local houseData = MySQL.query.await("SELECT minBau FROM mirtin_homes WHERE id = ?", { houseID })
+    
+    -- local maxWeight = 5000 -- Define um valor padrão caso não encontre no banco
+    -- if houseData and #houseData > 0 then
+    --     maxWeight = houseData[1].minBau or 5000
+    -- end
+
+    -- -- 🔥 Envia os dados do baú para o cliente abrir a NUI
+    -- local chestInfo = {
+    --     chest_type = "HOUSE",
+    --     inventory = chestData,
+    --     maxWeight = maxWeight
+    -- }
+
+    -- print("SERVER: Enviando dados do baú para o cliente:", json.encode(chestInfo, { indent = true }))
+    -- TriggerClientEvent("mirtin:openInventory", source, chestInfo)
+
+
     local chestKey = "houseChest:" .. houseID
+    local user_id = vRP.getUserId(source)
 
     -- 🔍 Verifica se o baú da casa já existe no banco de dados
     local rows = MySQL.query.await("SELECT dvalue FROM vrp_srv_data WHERE dkey = ?", { chestKey })
@@ -2894,52 +2907,71 @@ AddEventHandler("mirtin:openHouseChest", function(houseID)
 
     -- 🏡 Obtém a capacidade do baú (minBau) da tabela `mirtin_homes`
     local houseData = MySQL.query.await("SELECT minBau FROM mirtin_homes WHERE id = ?", { houseID })
-    
+
     local maxWeight = 5000 -- Define um valor padrão caso não encontre no banco
     if houseData and #houseData > 0 then
         maxWeight = houseData[1].minBau or 5000
     end
 
+    -- 🔥 Constrói o inventário e calcula o peso
+    local myHouseChest = {}
+    local weight = 0.0
+    for k, v in pairs(chestData) do
+        if Items[v.item] then
+            v["amount"] = parseInt(v["amount"])
+            v["name"] = Items[v["item"]].name
+            v["peso"] = Items[v["item"]].weight
+            v["index"] = v["item"]
+            v["key"] = v["item"]
+            v["slot"] = k
+            myHouseChest[k] = v
+            weight = weight + (Items[v.item].weight * parseInt(v["amount"]))
+        end
+    end
+
     -- 🔥 Envia os dados do baú para o cliente abrir a NUI
     local chestInfo = {
         chest_type = "HOUSE",
-        inventory = chestData,
+        inventory = myHouseChest,
+        weight = weight,
         maxWeight = maxWeight
     }
 
-    print("SERVER: Enviando dados do baú para o cliente:", json.encode(chestInfo, { indent = true }))
+    -- print("SERVER: Enviando dados do baú para o cliente:", json.encode(chestInfo, { indent = true }))
     TriggerClientEvent("mirtin:openInventory", source, chestInfo)
+
+
 end)
 
 
-RegisterNetEvent("mirtin:closeChest")
-AddEventHandler("mirtin:closeChest", function(chestType, chestID, inventory)
-    local source = source
-    local user_id = vRP.getUserId(source)
-    if not user_id then return end
+-- RegisterNetEvent("mirtin:closeChest")
+-- AddEventHandler("mirtin:closeChest", function(chestType, chestID, inventory)
+--     local source = source
+--     local user_id = vRP.getUserId(source)
+--     if not user_id then return end
 
-    local chestKey
-    if chestType == "HOUSE" then
-        chestKey = "houseChest:" .. chestID
-    elseif chestType == "GROUP" then
-        chestKey = "orgChest:" .. chestID
-    else
-        return
-    end
+--     local chestKey
+--     if chestType == "HOUSE" then
+--         chestKey = "houseChest:" .. chestID
+--     elseif chestType == "GROUP" then
+--         chestKey = "orgChest:" .. chestID
+--     else
+--         return
+--     end
 
-    local jsonData = json.encode(inventory)
-    print("SERVER: Salvando baú automaticamente ao fechar:", chestKey, jsonData) -- ✅ DEBUG
+--     local jsonData = json.encode(inventory)
+--     print("SERVER: Salvando baú automaticamente ao fechar:", chestKey, jsonData) -- ✅ DEBUG
 
-    local exists = MySQL.scalar.await("SELECT COUNT(*) FROM vrp_srv_data WHERE dkey = ?", { chestKey })
+--     local exists = MySQL.scalar.await("SELECT COUNT(*) FROM vrp_srv_data WHERE dkey = ?", { chestKey })
 
-    if exists and exists > 0 then
-        MySQL.execute("UPDATE vrp_srv_data SET dvalue = ? WHERE dkey = ?", { jsonData, chestKey })
-        print("SERVER: Baú atualizado no banco!") -- ✅ DEBUG
-    else
-        MySQL.insert("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, jsonData })
-        print("SERVER: Novo baú criado no banco!") -- ✅ DEBUG
-    end
-end)
+--     if exists and exists > 0 then
+--         MySQL.execute("UPDATE vrp_srv_data SET dvalue = ? WHERE dkey = ?", { jsonData, chestKey })
+--         print("SERVER: Baú atualizado no banco!") -- ✅ DEBUG
+--     else
+--         MySQL.insert("INSERT INTO vrp_srv_data (dkey, dvalue) VALUES (?, ?)", { chestKey, jsonData })
+--         print("SERVER: Novo baú criado no banco!") -- ✅ DEBUG
+--     end
+-- end)
 
 
 RegisterTunnel.storeChestItem = function(playerslot, amount, targetslot)
