@@ -226,7 +226,7 @@ CreateThread(function()
             if distance < 7.0 then 
                 msec = 4
                 -- DrawMarker(20, v.coords - vec3(0.0,0.0,0.4), 0, 0, 0, 0, 180.0, 0, 0.7, 0.7, 0.7, 130, 109, 213, 75, 1, 0, 0, 1)
-                DrawMarker(30, v.coords - vec3(0.0,0.0,0), 0, 0, 0, 0, 180.0, 0, 0.5, 0.5, 0.5, 120, 0, 66, 200, 0, 1, 0, 1)
+                DrawMarker(30, v.coords - vec3(0.0,0.0,0.4), 0, 0, 0, 0, 180.0, 0, 0.5, 0.5, 0.5, 0, 255, 66, 200, 1, 0, 0, 1)
                 if distance < 1.3 and IsControlJustPressed(0,38) then 
                     
                     ExecuteCommand('openfacchest')
